@@ -1,0 +1,15 @@
+
+Name: en-US-AriaNeural
+Gender: Female
+
+Name: en-US-AvaNeural
+Gender: Female
+
+Name: en-US-EmmaNeural@@@@@
+Gender: Female
+
+Name: en-US-JennyNeural
+Gender: Female
+
+Name: en-US-MichelleNeural
+Gender: Female
