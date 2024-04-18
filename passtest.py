@@ -8,7 +8,7 @@ print(key)
 
 
 # Text to encrypt
-text = "shismehta/@9354"
+text = ""
 
 # Encrypt the text
 encrypted_text = cipher_suite.encrypt(text.encode())
