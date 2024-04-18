@@ -1,7 +1,7 @@
 import openai
 
 # Set your OpenAI API key
-openai.api_key = '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'
+openai.api_key = ''
 
 def ask_chatgpt(prompt):
     # Send prompt to ChatGPT
