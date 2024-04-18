@@ -13,25 +13,38 @@ from googleapiclient.discovery import build
 import subprocess
 import spacy
 from spacy.matcher import Matcher
+import datetime
 
-API_KEY = 'AIzaSyBXjm4RzjzplYTL2sNPVvqyrZ1cMjt8_QE'
-PLAYLIST_ID = 'PLaQPXATbDPkKU8bnOQdvCx9OjesE0ZZ5w'
+API_KEY = ''
+PLAYLIST_ID = ''
 
 language = 'en'
 slow = False
+
+
+def get_time_of_day():
+    current_time = datetime.datetime.now().time()
+    if current_time.hour < 12:
+        return "morning"
+    elif 12 <= current_time.hour < 17:
+        return "afternoon"
+    elif 17 <= current_time.hour < 20:
+        return "evening"
+
+time_of_day = get_time_of_day()
 
 def Speak(text):
     voice = "en-US-EmmaNeural"
     command = f'edge-tts --voice "{voice}" --text "{text}" --write-media "intro.mp3"'
     os.system(command)
     os.system("mpg123 intro.mp3")
-    os.remove("intro.mp3")
+    os.remove("intro.mp3")  
 
 # Generate a key
 key = b'2AbgwdSql-1lzi0u6RN56G8PH7ALq4db84SnfpnGMeA='
 cipher_suite = Fernet(key)
 
-with open('/home/shis/Desktop/LunaAI/test/password_file.txt', 'r') as file:
+with open('password_file.txt', 'r') as file:
     # Read the password from the file
     password = file.readline().strip()
 
@@ -41,7 +54,16 @@ decrypted_text = cipher_suite.decrypt(password_bytes)
 
 decpass = decrypted_text.decode()
 
-print("Please enter the password to continue: ")
+with open('userpass.txt', 'r') as fileu:
+    # Read the password from the file
+    passwordu = fileu.readline().strip()
+
+password_bytesu = passwordu.encode()
+
+decrypted_textu = cipher_suite.decrypt(password_bytesu)
+
+decpassu = decrypted_textu.decode()
+
 Speak("Please enter the password to continue: ")
 upass = str(input())
 def internet_test():
@@ -53,8 +75,13 @@ def internet_test():
         print("YOU DON'T HAVE NETWORK CONNECTION! or you think this is wrong please request an issue on our github!")
         sys.exit()
 internet_test()
-if upass == decpass:
-    Speak("Welcome Back Sir! it's Luna,")
+if upass == decpass or decpassu:
+    if upass == decpass:
+        runner = "Mr SHIS"
+    elif upass == decpassu:
+        runner = "USER"
+    greet = f"Good {time_of_day}"+runner+", i am Luna!"
+    Speak(greet)
     Speak("Please enjoy the music while i prepare all the functions to use!")
 
     def play_music(file_path):
@@ -71,7 +98,7 @@ if upass == decpass:
         Speak("packets received")
 
     if __name__ == "__main__":
-        file_path = "/home/shis/Desktop/LunaAI/test/music.mp3"
+        file_path = "music.mp3"
         # Start playing the music in a separate thread
         music_thread = threading.Thread(target=play_music, args=(file_path,))
         music_thread.start()
@@ -99,7 +126,7 @@ if upass == decpass:
 
         if __name__ == "__main__":
             city = "Ahmedabad"
-            print(get_weather(city))
+            Speak(get_weather(city))
 
         Speak("I am now listning!")
 
@@ -112,7 +139,7 @@ if upass == decpass:
             fact_pattern = [{'LOWER': 'today'}, {'LOWER': "'s"}, {'LOWER': 'fact'}]
             News_pattern = [{'LOWER': 'today'}, {'LOWER': "'s"}, {'LOWER': 'news'}]
             history_pattern = [{'LOWER': 'today'}, {'LOWER': "in"}, {'LOWER': 'history'}]
-            Study_pattern = [{'LOWER': 'enable'}, {'LOWER': "study"}, {'LOWER': 'mode'}]
+            Study_pattern = [{'LOWER': "study"}]
             sleep_pattern = [{'LOWER': 'sleep'}]
             mute_pattern= [{'LOWER': 'mute'}]
             exit_pattern = [{'LOWER': 'exit'}]
@@ -149,7 +176,6 @@ if upass == decpass:
                     return "today in history"
                 else:
                     return "error"
-            return None
     def recognize_main(): #Main reply call function
         main_page = "https://en.wikipedia.org/wiki/Main_Page"
         r = sr.Recognizer() # sets r variable
@@ -200,6 +226,16 @@ if upass == decpass:
                 if __name__ == "__main__":
                     city = "Ahmedabad"
                     Speak(get_weather(city))
+            if "alaram" in Aanalp:
+                def set_alarm(hours, minutes):
+                    command = f"echo 'notify-send Alarm' | at {hours}:{minutes}"
+                    os.system(command)
+                    print(f"Alarm set for {hours}:{minutes}")
+
+                if __name__ == "__main__":
+                    alarm_hours = int(input("Enter the alarm hour (0-23): "))
+                    alarm_minutes = int(input("Enter the alarm minute (0-59): "))
+                    set_alarm(alarm_hours, alarm_minutes)
             if "today's fact" in Aanalp:
                 response = requests.get(main_page)
                 if response.status_code == 200:
@@ -268,6 +304,7 @@ if upass == decpass:
                 def put_to_sleep():
                     Speak("ok sir on it!")
                     os.system("systemctl suspend")
+                    sys.exit()
                 put_to_sleep()
             if "mute" in Aanalp:
                 Speak("ok sir on it!")
