@@ -1,0 +1,57 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    align-content: center;
+  }
+  body{
+    backdrop-filter: color(rgba(0, 0, 0, 0.439));
+  }
+  
+  .welcome-page {
+    height: 100%;
+    background-color: black; /* Background color for welcome page */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* Ensure it's above other content */
+    opacity: 1;
+    animation: fadeIn 3s ease forwards;
+  }
+  
+  .content {
+    opacity: 1;
+    transition: opacity 2s ease;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  #welcome-text {
+    opacity: 0;
+    animation: typing 3s steps(9) 1s forwards;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
